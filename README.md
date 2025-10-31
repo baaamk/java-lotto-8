@@ -177,3 +177,4 @@
 4. Enum을 적용하며 이것도 객체이기 때문에 안에 메서드를 구현한다.
 5. Controller의 과도한 책임을 ServiceLayer에 분리한다. 단, 이때도 하나의 서비스만 시행한다.
 6. toString도 view로 가면 안되기 때문에 dto에서만 구현한다.
+7. dto는 Recode로 사용하려 노력한다.
