@@ -35,6 +35,6 @@ class LottoNumberTest {
     void 다른_숫자와_비교해서_중복이_있다면_ture를_반환한다() {
         LottoNumber lottoNumber = LottoNumber.from(1);
         LottoNumber lottoNumber2 = LottoNumber.from(1);
-        Assertions.assertTrue(lottoNumber2.isDuplicate(lottoNumber));
+        Assertions.assertEquals(lottoNumber2, lottoNumber);
     }
 }
