@@ -3,6 +3,7 @@ package lotto.model.domain.vo;
 import lotto.exception.ErrorMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -27,5 +28,13 @@ class LottoNumberTest {
                 assertThatThrownBy(() -> LottoNumber.from(parsedLottoNumber))
                         .isInstanceOf(IllegalArgumentException.class)
                         .hasMessageContaining(ErrorMessage.INVALID_NUMBER_RANGE.getMessage()));
+    }
+
+    @Test
+    @DisplayName("다른 숫자와 비교해서 중복이 있으면 ture를 반환한다.")
+    void 다른_숫자와_비교해서_중복이_있다면_ture를_반환한다() {
+        LottoNumber lottoNumber = LottoNumber.from(1);
+        LottoNumber lottoNumber2 = LottoNumber.from(1);
+        Assertions.assertTrue(lottoNumber2.isDuplicate(lottoNumber));
     }
 }
