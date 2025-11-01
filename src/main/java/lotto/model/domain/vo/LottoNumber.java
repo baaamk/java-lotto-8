@@ -19,10 +19,6 @@ public class LottoNumber {
         return new LottoNumber(parsedLottoNumber);
     }
 
-    public boolean isDuplicate(LottoNumber lottoNumber) {
-        return this.equals(lottoNumber);
-    }
-
     private void validate(int lottoNumber) {
         if (!isInRange(lottoNumber)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_NUMBER_RANGE.getMessage());
