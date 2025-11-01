@@ -1,7 +1,8 @@
 package lotto.exception;
 
 public enum ErrorMessage {
-    INVALID_NUMBER_RANGE("1~45이내의 숫자를 입력해 주세요.");
+    INVALID_NUMBER_RANGE("1~45이내의 숫자를 입력해 주세요."),
+    DUPLICATE_BONUS_NUMBER("당첨번호와 중복된 숫자를 입력하지 마세요.");
 
     private final String message;
 
