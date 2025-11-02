@@ -1,5 +1,7 @@
 package lotto.model.domain.vo;
 
+import lotto.model.domain.Lotto;
+
 public class BonusNumber {
     private final LottoNumber bonusNumber;
 
@@ -11,7 +13,7 @@ public class BonusNumber {
         return new BonusNumber(LottoNumber.from(parsedBonusNumber));
     }
 
-    public boolean isMatchedWith(LottoNumber lottoNumber) {
-        return bonusNumber.equals(lottoNumber);
+    public boolean isMatchedWith(Lotto lotto) {
+        return lotto.contains(bonusNumber);
     }
 }
