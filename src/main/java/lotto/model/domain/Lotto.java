@@ -21,6 +21,14 @@ public class Lotto {
         );
     }
 
+    public boolean contains(LottoNumber number) {
+        return lottoNumbers.contains(number);
+    }
+
+    public List<LottoNumber> numbers() {
+        return List.copyOf(lottoNumbers);
+    }
+
     private void validate(List<LottoNumber> numbers) {
         if (numbers.size() != LOTTO_NUMBERS_SIZE) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_LOTTO_SIZE.getMessage());
