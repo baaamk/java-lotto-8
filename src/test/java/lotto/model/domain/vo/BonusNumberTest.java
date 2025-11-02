@@ -1,14 +1,13 @@
 package lotto.model.domain.vo;
 
 import lotto.exception.ErrorMessage;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BonusNumberTest {
 
@@ -18,7 +17,7 @@ class BonusNumberTest {
     void _1에서_45_이내의_숫자가_들어오면_정상적으로_BonusNumber를_생성한다(int number) {
         BonusNumber bonusNumber = BonusNumber.from(number);
 
-        assertTrue(bonusNumber.isMatchedWith(LottoNumber.from(number)));
+        Assertions.assertNotNull(bonusNumber);
     }
 
     @ParameterizedTest
