@@ -1,6 +1,7 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -52,7 +53,53 @@ class ApplicationTest extends NsTest {
             runException("1000j");
             assertThat(output()).contains(ERROR_MESSAGE);
         });
+
+        assertSimpleTest(() -> {
+            runException("", "1,2,3,4,5,6", "7");
+            assertThat(output()).contains(ERROR_MESSAGE);
+        });
+
+        // 당첨번호 개수 부족
+        assertSimpleTest(() -> {
+            runException("8000", "1,2,3,4,5", "7");
+            assertThat(output()).contains(ERROR_MESSAGE);
+        });
+
+        // 보너스 번호 문자 포함
+        assertSimpleTest(() -> {
+            runException("8000", "1,2,3,4,5,6", "a");
+            assertThat(output()).contains(ERROR_MESSAGE);
+        });
     }
+
+    @Test
+    @DisplayName("모든 등수 시나리오 검증 (1등~5등 매칭 로직)")
+    void 모든_등수_계산_확인() {
+        assertRandomUniqueNumbersInRangeTest(
+                () -> {
+                    run("5000", "1,2,3,4,5,6", "7");
+                    String out = output();
+
+                    // 등수별 출력 검증
+                    assertThat(out).contains(
+                            "3개 일치 (5,000원)",
+                            "4개 일치 (50,000원)",
+                            "5개 일치 (1,500,000원)",
+                            "5개 일치, 보너스 볼 일치 (30,000,000원)",
+                            "6개 일치 (2,000,000,000원)"
+                    );
+
+                    // 통계 및 수익률 포맷 검증
+                    assertThat(out).contains("당첨 통계", "---", "총 수익률");
+                },
+                List.of(1, 2, 3, 4, 5, 6),
+                List.of(1, 2, 3, 4, 5, 7),
+                List.of(1, 2, 3, 4, 5, 8),
+                List.of(1, 2, 3, 4, 9, 10),
+                List.of(1, 2, 3, 11, 12, 13)
+        );
+    }
+
 
     @Override
     public void runMain() {
