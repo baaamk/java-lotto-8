@@ -1,9 +1,6 @@
 package lotto.model.domain.vo;
 
-import lotto.exception.ErrorMessage;
 import lotto.model.domain.Lotto;
-
-import java.util.Objects;
 
 public class BonusNumber {
     private final LottoNumber bonusNumber;

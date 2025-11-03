@@ -17,11 +17,7 @@ public class InputConsoleView implements InputView {
 
     @Override
     public String inputBonusNumber() {
-        try{
-            System.out.println("보너스 번호를 입력해 주세요.");
-            return Console.readLine();
-        } finally {
-            Console.close();
-        }
+        System.out.println("보너스 번호를 입력해 주세요.");
+        return Console.readLine();
     }
 }

@@ -12,6 +12,7 @@ public class Lotto {
     private final List<LottoNumber> lottoNumbers;
 
     private Lotto(List<LottoNumber> lottoNumbers) {
+
         validate(lottoNumbers);
         this.lottoNumbers = lottoNumbers;
     }

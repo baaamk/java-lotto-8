@@ -3,6 +3,7 @@ package lotto.controller;
 import lotto.controller.converter.LottoDtoConverter;
 import lotto.controller.dto.LottoPurchaseResult;
 import lotto.controller.dto.LottoResult;
+import lotto.exception.ErrorMessage;
 import lotto.model.domain.Lotto;
 import lotto.model.domain.Lottos;
 import lotto.model.domain.vo.BonusNumber;
@@ -15,6 +16,7 @@ import lotto.presentation.view.InputView;
 import lotto.presentation.view.OutputView;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class Controller {
@@ -23,9 +25,9 @@ public class Controller {
     private final LottoService lottoService;
 
     public Controller(InputView inputView, OutputView outputView, LottoService lottoService) {
-        this.inputView = inputView;
-        this.outputView = outputView;
-        this.lottoService = lottoService;
+        this.inputView = Objects.requireNonNull(inputView, ErrorMessage.NULL_EXCEPTION.getMessage());
+        this.outputView = Objects.requireNonNull(outputView, ErrorMessage.NULL_EXCEPTION.getMessage());
+        this.lottoService = Objects.requireNonNull(lottoService, ErrorMessage.NULL_EXCEPTION.getMessage());
     }
 
     public void run() {
@@ -36,13 +38,18 @@ public class Controller {
         showResult(lottos, money);
     }
 
-    private void showResult(Lottos lottos, Money money) {
-        LottoResult result = getLottoResult(lottos);
-        outputView.printStatistics(result);
-        outputView.printResult(lottoService.calculateEarningRate(result, money));
+    private Money getInputMoney() {
+        return retryInput(() -> {
+            int parsedMoney = MoneyParser.parse(inputView.inputPurchaseMoney());
+            Objects.requireNonNull(parsedMoney, ErrorMessage.NULL_EXCEPTION.getMessage());
+            return Money.from(parsedMoney);
+        });
     }
 
     private Lottos showLottos(Money money) {
+        if (money == null) {
+            throw new IllegalStateException(ErrorMessage.STATE_EXCEPTION.getMessage());
+        }
         Lottos lottos = lottoService.buy(money);
 
         LottoPurchaseResult lottoPurchaseResult = LottoDtoConverter.toDto(lottos);
@@ -51,20 +58,29 @@ public class Controller {
         return lottos;
     }
 
-    private Money getInputMoney() {
-        return retryInput(() -> {
-            int parsedMoney = MoneyParser.parse(inputView.inputPurchaseMoney());
-            return Money.from(parsedMoney);
-        });
+    private void showResult(Lottos lottos, Money money) {
+        if (money == null || lottos == null) {
+            throw new IllegalStateException(ErrorMessage.STATE_EXCEPTION.getMessage());
+        }
+        LottoResult result = getLottoResult(lottos);
+        outputView.printStatistics(result);
+        outputView.printResult(lottoService.calculateEarningRate(result, money));
     }
 
     private LottoResult getLottoResult(Lottos lottos) {
-        return retryInput(()->{
+        return retryInput(() -> {
             List<Integer> parsedWinningLotto = WinningLottoParser.parse(inputView.inputWinningNumbers());
+            Objects.requireNonNull(parsedWinningLotto, ErrorMessage.NULL_EXCEPTION.getMessage());
+
             Lotto winningLotto = Lotto.from(parsedWinningLotto);
-            int parsedBonusNumber = BonusNumberParser.parse(inputView.inputBonusNumber());
-            BonusNumber bonusNumber = BonusNumber.from(parsedBonusNumber);
-            return lottoService.matchWith(lottos, winningLotto, bonusNumber);
+
+            return retryInput(() -> {
+                int parsedBonusNumber = BonusNumberParser.parse(inputView.inputBonusNumber());
+                Objects.requireNonNull(parsedBonusNumber, ErrorMessage.NULL_EXCEPTION.getMessage());
+
+                BonusNumber bonusNumber = BonusNumber.from(parsedBonusNumber);
+                return lottoService.matchWith(lottos, winningLotto, bonusNumber);
+            });
         });
     }
 

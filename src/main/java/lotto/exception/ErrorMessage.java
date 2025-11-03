@@ -10,7 +10,8 @@ public enum ErrorMessage {
     DUPLICATE_LOTTO_NUMBER("중복된 당첨번호가 있습니다."),
     INVALID_NUMBER_INPUT("0 이상의 숫자만 입력해 주세요."),
     INVALID_WINNING_LOTTO_INPUT("쉼표로 구분된 6개의 숫자를 입력해 주세요."),
-    NULL_EXCEPTION("인자가 NULL입니다.");
+    NULL_EXCEPTION("인자가 NULL입니다."),
+    STATE_EXCEPTION("이전 단계를 먼저 끝내야 합니다.");
 
     private final String message;
     private static final String ERROR_MESSAGE = "[ERROR] ";
