@@ -17,7 +17,7 @@ public class Lotto {
 
     public static Lotto from(List<Integer> lottoNumbers) {
         return new Lotto(
-                lottoNumbers.stream().map(LottoNumber::from).toList()
+                lottoNumbers.stream().map(LottoNumber::from).sorted().toList()
         );
     }
 
