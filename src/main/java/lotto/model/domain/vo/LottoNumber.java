@@ -41,12 +41,12 @@ public class LottoNumber implements Comparable<LottoNumber> {
         return Objects.hashCode(lottoNumber);
     }
 
-    public int getLottoNumber() {
-        return lottoNumber;
-    }
-
     @Override
     public int compareTo(LottoNumber o) {
         return Integer.compare(this.lottoNumber, o.lottoNumber);
+    }
+
+    public int getLottoNumber() {
+        return lottoNumber;
     }
 }
