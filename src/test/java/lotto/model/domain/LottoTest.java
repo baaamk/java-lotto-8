@@ -2,6 +2,7 @@ package lotto.model.domain;
 
 import lotto.exception.ErrorMessage;
 import lotto.model.domain.vo.LottoNumber;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,21 @@ class LottoTest {
 
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    @DisplayName("로또 생성지 번호가 정렬된 상태로 저장된다")
+    void 로또_생성시_번호가_정렬된_상태로_저장된다() {
+        List<Integer> unordered = List.of(44, 1, 30, 7, 25, 12);
+
+        Lotto lotto = Lotto.from(unordered);
+
+        assertThat(lotto.numbers())
+                .asInstanceOf(InstanceOfAssertFactories.list(LottoNumber.class))
+                .extracting(LottoNumber::getLottoNumber)
+                .containsExactly(1, 7, 12, 25, 30, 44);
+
+    }
+
 
     @Test
     void 로또_번호의_개수가_6개가_넘어가면_예외가_발생한다() {
