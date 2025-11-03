@@ -1,5 +1,6 @@
 package lotto.model.domain;
 
+import lotto.exception.ErrorMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -60,5 +61,13 @@ class LottosTest {
         assertThat(lottos.values())
                 .hasSize(2)
                 .containsExactly(a, b);
+    }
+
+    @Test
+    @DisplayName("로또 생성 실패: null이 들어오면 NullPointerException 발생")
+    void createLotto_fail_null() {
+        assertThatThrownBy(() -> Lottos.of(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(ErrorMessage.NULL_EXCEPTION.getMessage());
     }
 }

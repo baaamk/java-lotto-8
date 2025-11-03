@@ -40,6 +40,13 @@ class LottoTest {
 
     }
 
+    @Test
+    @DisplayName("로또 생성 실패: null이 들어오면 NullPointerException 발생")
+    void createLotto_fail_null() {
+        assertThatThrownBy(() -> Lotto.from(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(ErrorMessage.NULL_EXCEPTION.getMessage());
+    }
 
     @Test
     void 로또_번호의_개수가_6개가_넘어가면_예외가_발생한다() {

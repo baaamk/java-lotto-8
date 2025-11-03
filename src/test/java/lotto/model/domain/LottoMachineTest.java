@@ -1,10 +1,12 @@
 package lotto.model.domain;
 
+import lotto.exception.ErrorMessage;
 import lotto.model.strategy.LottoGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LottoMachineTest {
 
@@ -32,5 +34,13 @@ class LottoMachineTest {
         lottos.values().forEach(lotto ->
                 assertThat(lotto.numbers()).hasSize(6)
         );
+    }
+
+    @Test
+    @DisplayName("로또 생성 실패: null이 들어오면 NullPointerException 발생")
+    void createLotto_fail_null() {
+        assertThatThrownBy(() -> new LottoMachine(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(ErrorMessage.NULL_EXCEPTION.getMessage());
     }
 }

@@ -1,6 +1,7 @@
 package lotto.model.service;
 
 import lotto.controller.dto.LottoResult;
+import lotto.exception.ErrorMessage;
 import lotto.model.domain.*;
 import lotto.model.domain.vo.BonusNumber;
 import lotto.model.domain.vo.Money;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class LottoServiceImplTest {
 
@@ -57,5 +59,24 @@ class LottoServiceImplTest {
         double rate = service.calculateEarningRate(result, spentMoney);
 
         assertThat(rate).isEqualTo(62.5);
+    }
+
+    @Test
+    @DisplayName("로또 서비스 생성 실패: null이 들어오면 NullPointerException 발생")
+    void 로또_서비스_생성_실패() {
+        assertThatThrownBy(() -> new LottoServiceImpl(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(ErrorMessage.NULL_EXCEPTION.getMessage());
+    }
+
+    @Test
+    @DisplayName("로또 구매 실패: null이 들어오면 NullPointerException 발생")
+    void 로또_구매_실패() {
+        LottoMachine lottoMachine = new LottoMachine(new LottoGenerator());
+        LottoServiceImpl service = new LottoServiceImpl(lottoMachine);
+
+        assertThatThrownBy(() -> service.buy(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(ErrorMessage.NULL_EXCEPTION.getMessage());
     }
 }

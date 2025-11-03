@@ -53,4 +53,20 @@ class WinningLottoTest {
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(ErrorMessage.DUPLICATE_BONUS_NUMBER.getMessage());
     }
+
+    @Test
+    @DisplayName("당첨로또 생성 실패: null이 들어오면 NullPointerException 발생")
+    void createLotto_fail_null() {
+        assertThatThrownBy(() -> WinningLotto.from(null,BonusNumber.from(1)))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(ErrorMessage.NULL_EXCEPTION.getMessage());
+    }
+
+    @Test
+    @DisplayName("당첨로또 생성 후 보너스넘버 생성 실패: null이 들어오면 NullPointerException 발생")
+    void createLotto_and_bonusNumber_fail_null() {
+        assertThatThrownBy(() -> WinningLotto.from(Lotto.from(List.of(1,2,3,4,5,6)),null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(ErrorMessage.NULL_EXCEPTION.getMessage());
+    }
 }
