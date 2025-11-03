@@ -1,6 +1,7 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import lotto.exception.ErrorMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -59,13 +60,11 @@ class ApplicationTest extends NsTest {
             assertThat(output()).contains(ERROR_MESSAGE);
         });
 
-        // 당첨번호 개수 부족
         assertSimpleTest(() -> {
             runException("8000", "1,2,3,4,5", "7");
             assertThat(output()).contains(ERROR_MESSAGE);
         });
 
-        // 보너스 번호 문자 포함
         assertSimpleTest(() -> {
             runException("8000", "1,2,3,4,5,6", "a");
             assertThat(output()).contains(ERROR_MESSAGE);
@@ -80,7 +79,6 @@ class ApplicationTest extends NsTest {
                     run("5000", "1,2,3,4,5,6", "7");
                     String out = output();
 
-                    // 등수별 출력 검증
                     assertThat(out).contains(
                             "3개 일치 (5,000원)",
                             "4개 일치 (50,000원)",
@@ -89,7 +87,6 @@ class ApplicationTest extends NsTest {
                             "6개 일치 (2,000,000,000원)"
                     );
 
-                    // 통계 및 수익률 포맷 검증
                     assertThat(out).contains("당첨 통계", "---", "총 수익률");
                 },
                 List.of(1, 2, 3, 4, 5, 6),
@@ -99,6 +96,16 @@ class ApplicationTest extends NsTest {
                 List.of(1, 2, 3, 11, 12, 13)
         );
     }
+
+    @Test
+    @DisplayName("보너스 번호가 당첨번호와 중복되면 예외 발생")
+    void 보너스번호_중복_예외_테스트() {
+        assertSimpleTest(() -> {
+            runException("1000", "1,2,3,4,5,6", "6");
+            assertThat(output()).contains(ErrorMessage.DUPLICATE_BONUS_NUMBER.getMessage());
+        });
+    }
+
 
 
     @Override
