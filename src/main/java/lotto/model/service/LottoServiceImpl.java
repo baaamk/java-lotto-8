@@ -1,12 +1,14 @@
 package lotto.model.service;
 
 import lotto.controller.dto.LottoResult;
+import lotto.exception.ErrorMessage;
 import lotto.model.domain.*;
 import lotto.model.domain.vo.BonusNumber;
 import lotto.model.domain.vo.Money;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class LottoServiceImpl implements LottoService{
@@ -16,10 +18,12 @@ public class LottoServiceImpl implements LottoService{
     private final LottoMachine lottoMachine;
 
     public LottoServiceImpl(LottoMachine lottoMachine) {
+        Objects.requireNonNull(lottoMachine, ErrorMessage.NULL_EXCEPTION.getMessage());
         this.lottoMachine = lottoMachine;
     }
 
     public Lottos buy(Money money) {
+        Objects.requireNonNull(money, ErrorMessage.NULL_EXCEPTION.getMessage());
         return lottoMachine.publishLottos(money.returnAmount());
     }
 

@@ -4,6 +4,8 @@ package lotto.model.domain;
 import lotto.exception.ErrorMessage;
 import lotto.model.domain.vo.BonusNumber;
 
+import java.util.Objects;
+
 public class WinningLotto {
     private final Lotto winningLotto;
     private final BonusNumber bonusNumber;
@@ -14,6 +16,8 @@ public class WinningLotto {
     }
 
     public static WinningLotto from(Lotto winningLotto, BonusNumber bonusNumber) {
+        Objects.requireNonNull(winningLotto, ErrorMessage.NULL_EXCEPTION.getMessage());
+        Objects.requireNonNull(bonusNumber, ErrorMessage.NULL_EXCEPTION.getMessage());
         validate(winningLotto, bonusNumber);
         return new WinningLotto(winningLotto, bonusNumber);
     }

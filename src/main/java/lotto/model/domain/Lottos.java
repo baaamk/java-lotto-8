@@ -1,6 +1,9 @@
 package lotto.model.domain;
 
+import lotto.exception.ErrorMessage;
+
 import java.util.List;
+import java.util.Objects;
 
 public class Lottos {
 
@@ -11,6 +14,7 @@ public class Lottos {
     }
 
     public static Lottos of(List<Lotto> lottos) {
+        Objects.requireNonNull(lottos, ErrorMessage.NULL_EXCEPTION.getMessage());
         return new Lottos(lottos);
     }
 
