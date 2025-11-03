@@ -4,6 +4,7 @@ import lotto.exception.ErrorMessage;
 import lotto.model.domain.vo.LottoNumber;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Lotto {
     private static final int LOTTO_NUMBERS_SIZE = 6;
@@ -16,6 +17,7 @@ public class Lotto {
     }
 
     public static Lotto from(List<Integer> lottoNumbers) {
+        Objects.requireNonNull(lottoNumbers, ErrorMessage.NULL_EXCEPTION.getMessage());
         return new Lotto(
                 lottoNumbers.stream().map(LottoNumber::from).sorted().toList()
         );
